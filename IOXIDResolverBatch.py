@@ -33,6 +33,7 @@ def main(argv):
         if target_file != "":
             line = target_file.readline()
             while line:
+                line=line.strip()
                 t = threading.Thread(target=scan, args=(line,))
                 t.start()
                 line = target_file.readline()
@@ -40,7 +41,6 @@ def main(argv):
 
 def scan(target_ip):
     target_ip = str(target_ip)
-    print("[*]scanning:" + target_ip+"\n")
     authLevel = RPC_C_AUTHN_LEVEL_NONE
     stringBinding = r'ncacn_ip_tcp:%s' % target_ip
     rpctransport = transport.DCERPCTransportFactory(stringBinding)
@@ -50,6 +50,7 @@ def scan(target_ip):
     try:
          portmap.connect()
     except Exception as e:
+        #print(e)
         return 0
 
     objExporter = IObjectExporter(portmap)
